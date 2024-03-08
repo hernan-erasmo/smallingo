@@ -50,6 +50,9 @@ RUN python manage.py makemigrations
 # Run Django migrate
 RUN python manage.py migrate
 
+# Create seed data
+RUN python manage.py seed_data
+
 # Make port 8000 available to the world outside this container
 EXPOSE 8000
 
