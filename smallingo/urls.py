@@ -18,9 +18,13 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
+from core.views import SmallingoVideoListView, SmallingoVideoCreateView, SmallingoVideoDetailView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('videos/', SmallingoVideoListView.as_view(), name='video-list'),
+    path('videos/<int:pk>/', SmallingoVideoDetailView.as_view(), name='video-list'),
+    path('videos/create/', SmallingoVideoCreateView.as_view(), name='create-video'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL + settings.VIDEO_DIR + '/', document_root=settings.MEDIA_ROOT + settings.VIDEO_DIR)
