@@ -2,11 +2,22 @@
 FROM python:3.10-slim
 
 # Install system dependencies
+# gcc, libc-dev, libpq-dev -> required to install psycopg2
+# software-properties-common, gnupg, python3-launchpadlib -> to be able to add ppa:jonathonf/ffmpeg-4
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         gcc \
         libc-dev \
         libpq-dev \
+        software-properties-common \
+        gnupg \
+        python3-launchpadlib
+
+# ppa:jonathonf/ffmpeg-4 -> to install ffmpeg
+# ffmpeg -> to use moviepy
+RUN add-apt-repository ppa:jonathonf/ffmpeg-4 \
+    && apt-get install -y --no-install-recommends \
+        ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
 # Set environment variables
