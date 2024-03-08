@@ -76,6 +76,25 @@ def populate_audio_fragment(video_id: int) -> None:
         audio_fragment.write_audiofile(audio_filename)
         smallingo_video.audio_fragment.name = audio_filename
         smallingo_video.save()
+        video.close()
+    except SmallingoVideo.DoesNotExist:
+        print(f"SmallingoVideo with id={video_id} does not exist.")
+    except Exception as ex:
+        traceback.print_exception(ex)
+
+
+def populate_video_thumbnail(video_id: int) -> None:
+    try:
+        smallingo_video = SmallingoVideo.objects.get(pk=video_id)
+        print("Instantiating video object")
+        video = VideoFileClip(smallingo_video.uploaded_file.path)
+        video_name = smallingo_video.uploaded_file.name.split('/')[-1]
+        frame_filename = smallingo_video.video_thumbnail.field.upload_to + '/' + video_name + '.png'
+        print("Extracting first frame from video")
+        video.save_frame(frame_filename, t=0)
+        smallingo_video.video_thumbnail.name = frame_filename
+        smallingo_video.save()
+        video.close()
     except SmallingoVideo.DoesNotExist:
         print(f"SmallingoVideo with id={video_id} does not exist.")
     except Exception as ex:
