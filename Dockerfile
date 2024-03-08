@@ -24,6 +24,11 @@ RUN pip install -r requirements.txt
 # Copy the current directory contents into the container at /app
 COPY . /app
 
+# hack to make ImageField behave as FileField when saving a frame from moviepy
+# this must match the value of THUMBNAIL_DIR in settings.py
+# TODO(Hernan): fix this shit
+RUN mkdir -p /app/thumbnails
+
 # Run Django makemigrations
 RUN python manage.py makemigrations
 
