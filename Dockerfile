@@ -35,9 +35,13 @@ RUN pip install -r requirements.txt
 # Copy the current directory contents into the container at /app
 COPY . /app
 
-# hack to make ImageField behave as FileField when saving a frame from moviepy
-# this must match the value of THUMBNAIL_DIR in settings.py
+# hack to make SmallingoVideo model 'upload_to' dirs exist and prevent moviepy errors
+# these must match the values defined in settings.py
 # TODO(Hernan): fix this shit
+RUN mkdir -p /app/thumbnails
+RUN mkdir -p /app/original_video
+RUN mkdir -p /app/original_audio
+RUN mkdir -p /app/translation_audio
 RUN mkdir -p /app/thumbnails
 
 # Run Django makemigrations
