@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from typing import Optional
 
 import requests
-from moviepy.editor import VideoFileClip
+from moviepy.editor import VideoFileClip, AudioFileClip
 
 from django.core.files.base import ContentFile
 from core.models import SmallingoVideo
@@ -42,6 +42,40 @@ def populate_duration_and_height(video_id: int) -> None:
         print(f"Saving video object with duration = {smallingo_video.duration} and height = {smallingo_video.pixels_tall}")
         smallingo_video.save()
         video.close()
+    except SmallingoVideo.DoesNotExist:
+        print(f"SmallingoVideo with id={video_id} does not exist.")
+    except Exception as ex:
+        traceback.print_exception(ex)
+
+
+def populate_audio_fragment(video_id: int) -> None:
+    try:
+        smallingo_video = SmallingoVideo.objects.get(id=video_id)
+        duration = smallingo_video.duration
+
+        print("Calculating audio_start and audio_end")
+        if duration > timedelta(seconds=45):
+            audio_start = 30
+            audio_end = 45
+        elif timedelta(seconds=15) < duration <= timedelta(seconds=45):
+            audio_start = max(duration - 15, 0)
+            audio_end = duration
+        else:
+            audio_start = 0
+            audio_end = duration
+        print(f"audio_start = {audio_start}, audio_end = {audio_end}")
+
+        print("Creating audio clip")
+        video = VideoFileClip(smallingo_video.uploaded_file.path)
+        audio_fragment = video.subclip(audio_start, audio_end).audio
+
+        video_name = smallingo_video.uploaded_file.name.split('/')[-1]
+        audio_filename = smallingo_video.audio_fragment.field.upload_to + '/' + video_name + '.mp3'
+
+        print("Writing audio file at {audio_filename}")
+        audio_fragment.write_audiofile(audio_filename)
+        smallingo_video.audio_fragment.name = audio_filename
+        smallingo_video.save()
     except SmallingoVideo.DoesNotExist:
         print(f"SmallingoVideo with id={video_id} does not exist.")
     except Exception as ex:
