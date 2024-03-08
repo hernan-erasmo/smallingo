@@ -127,3 +127,10 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# SmallingoVideo settings
+VIDEO_DIR = "original_video"
+AUDIO_DIR = "original_audio"
+AUDIO_TRANSLATION_DIR = "translation_audio"
+THUMBNAIL_DIR = "thumbnails"
+
