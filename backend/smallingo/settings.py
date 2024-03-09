@@ -30,12 +30,13 @@ SECRET_KEY = 'django-insecure-=jmled)uj#2qi5@iq5u4--2+y%t8&i3shs$fj0v7omp1t95--c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['smallingo-backend', 'localhost', '127.0.0.1', 'smallingo-frontend']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
     'rest_framework',
     'core.apps.CoreConfig',
     'django.contrib.admin',
@@ -46,7 +47,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
+CORS_ALLOWED_ORIGINS = [
+    "http://smallingo-frontend:3000",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
