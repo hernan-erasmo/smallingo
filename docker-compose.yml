@@ -6,20 +6,20 @@ services:
     image: postgres:latest
     restart: always
     env_file:
-      - ./.env
+      - ./backend/.env
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
   smallingo-backend:
     container_name: smallingo-backend
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ./backend
+      dockerfile: ./Dockerfile
     restart: always
     ports:
       - "8000:8000"
     env_file:
-      - ./.env
+      - ./backend/.env
     depends_on:
       - smallingo-postgres
 

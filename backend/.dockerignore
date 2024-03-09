@@ -1,0 +1,9 @@
+bin/
+Scripts/
+
+include/
+Include/
+
+pyvenv.cfg/
+__pycache__/
+db.sqlite3
