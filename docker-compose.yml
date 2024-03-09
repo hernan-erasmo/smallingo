@@ -1,5 +1,6 @@
 version: '3'
 
+
 services:
   smallingo-postgres:
     container_name: smallingo-postgres
@@ -9,6 +10,12 @@ services:
       - ./backend/.env
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
+  smallingo-redis:
+    container_name: smallingo-redis
+    image: redis:latest
+    ports:
+      - "6379:6379"
 
   smallingo-backend:
     container_name: smallingo-backend
@@ -22,6 +29,7 @@ services:
       - ./backend/.env
     depends_on:
       - smallingo-postgres
+      - smallingo-redis
 
   smallingo-frontend:
     container_name: smallingo-frontend
