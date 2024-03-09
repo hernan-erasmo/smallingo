@@ -6,3 +6,5 @@ python-dotenv==1.0.1
 moviepy==1.0.3
 djangorestframework==3.14.0
 django-cors-headers==4.3.1
+redis==5.0.2
+celery==5.3.6
