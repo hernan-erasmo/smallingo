@@ -145,3 +145,9 @@ AUDIO_DIR = "original_audio"
 AUDIO_TRANSLATION_DIR = "translation_audio"
 THUMBNAIL_DIR = "thumbnails"
 
+# Celery config
+
+CELERY_BROKER_URL = 'redis://smallingo-redis:6379/0'
+CELERY_RESULT_BACKEND = 'redis://smallingo-redis:6379/0'
+
+CELERY_IMPORTS = ('core.tasks',)
