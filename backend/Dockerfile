@@ -57,4 +57,4 @@ RUN python manage.py seed_data
 EXPOSE 8000
 
 # Run the Django development server when the container launches
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD celery -A core worker -l info & python manage.py runserver 0.0.0.0:8000
