@@ -6,6 +6,11 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 function App() {
   const [textInput, setTextInput] = useState('');
 
+/*
+  CHECKPOINT 1
+  we need a useEffect here to fetch the latest uploaded video URL
+*/
+
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setTextInput(event.target.value);
   };
@@ -51,11 +56,41 @@ function App() {
       </Accordion>
       <Accordion style={{ marginTop: 20 }}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography>Spanish Text Translation</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            This is the content for the Spanish Text Translation accordion.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion style={{ marginTop: 20 }}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography>Hear Spanish Translation</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            This is the content for the Hear Spanish Translation accordion.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion style={{ marginTop: 20 }}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography>First frame</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
             This is the content for the First frame accordion.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion style={{ marginTop: 20 }}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography>Words on First Frame</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            This is the content for the Words on First Frame accordion.
           </Typography>
         </AccordionDetails>
       </Accordion>
