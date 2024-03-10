@@ -2,15 +2,6 @@ version: '3'
 
 
 services:
-  smallingo-postgres:
-    container_name: smallingo-postgres
-    image: postgres:latest
-    restart: always
-    env_file:
-      - ./backend/.env
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
   smallingo-redis:
     container_name: smallingo-redis
     image: redis:latest
@@ -28,7 +19,6 @@ services:
     env_file:
       - ./backend/.env
     depends_on:
-      - smallingo-postgres
       - smallingo-redis
 
   smallingo-frontend:
@@ -41,7 +31,6 @@ services:
     volumes:
       - ./frontend/src:/app/src
       - /app/node_modules
-
 
 volumes:
   postgres_data:
