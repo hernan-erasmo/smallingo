@@ -4,8 +4,8 @@ from datetime import datetime, timedelta
 from typing import Optional
 
 import requests
-from celery import shared_task
-from moviepy.editor import VideoFileClip, AudioFileClip
+from celery import chain
+from moviepy.editor import VideoFileClip
 
 from django.core.files.base import ContentFile
 from core import app as celery_app
@@ -16,31 +16,39 @@ from core.utils import sanitize_filename
 # TODO(Hernan) need to find a way to normalize original video names to be consistent
 # with their parsed content, and also to avoid having duplicate videos.
 @celery_app.task(bind=True)
-def download_original_video(self, video_id: int) -> Optional[str]:
+def download_original_video(self, video_id: int) -> None:
+    def on_download_success():
+        chain(
+            populate_duration_and_height.s(kwargs={"video_id": video_id}),
+            populate_audio_fragment.s(kwargs={"video_id": video_id}),
+            populate_video_thumbnail.s(kwargs={"video_id": video_id})
+        ).apply_async()
+
     try:
-        self.update_state(state='PROGRESS', meta={'progress': 0})
         smallingo_video = SmallingoVideo.objects.get(id=video_id)
         file_url = smallingo_video.url
 
         print(f"GETting file at {file_url}")
-        self.update_state(state='PROGRESS', meta={'progress': 25})
         with requests.get(file_url, stream=True) as response:
             if response.status_code == 200:
                 print(f"Successfully got {file_url}")
-                self.update_state(state='PROGRESS', meta={'progress': 50})
                 file_content = response.content
                 file_name = f"{sanitize_filename(os.path.basename(file_url))}_{datetime.now().strftime('%y%m%d%H%M%S%f')}"
                 smallingo_video.uploaded_file.save(file_name, ContentFile(file_content), save=True)
                 smallingo_video.save()
-                self.update_state(state='PROGRESS', meta={'progress': 75})
-                return file_name
             else:
                 print(f"Failed to download file from {file_url}: HTTP status code {response.status_code}")
     except SmallingoVideo.DoesNotExist:
         print(f"SmallingoVideo with id={video_id} does not exist.")
+    except Exception:
+        print(traceback.format_exc())
+    else:
+        on_download_success()
 
 
-def populate_duration_and_height(video_id: int) -> None:
+@celery_app.task(bind=True)
+def populate_duration_and_height(self, *args, **kwargs) -> None:
+    video_id = kwargs.get('kwargs', {}).get('video_id')
     try:
         smallingo_video = SmallingoVideo.objects.get(id=video_id)
         print("Instantiating video object")
@@ -56,7 +64,9 @@ def populate_duration_and_height(video_id: int) -> None:
         traceback.print_exception(ex)
 
 
-def populate_audio_fragment(video_id: int) -> None:
+@celery_app.task(bind=True)
+def populate_audio_fragment(self, *args, **kwargs) -> None:
+    video_id = kwargs.get('kwargs', {}).get('video_id')
     try:
         smallingo_video = SmallingoVideo.objects.get(id=video_id)
         duration = smallingo_video.duration
@@ -91,7 +101,9 @@ def populate_audio_fragment(video_id: int) -> None:
         traceback.print_exception(ex)
 
 
-def populate_video_thumbnail(video_id: int) -> None:
+@celery_app.task(bind=True)
+def populate_video_thumbnail(self, *args, **kwargs) -> None:
+    video_id = kwargs.get('kwargs', {}).get('video_id')
     try:
         smallingo_video = SmallingoVideo.objects.get(pk=video_id)
         print("Instantiating video object")
