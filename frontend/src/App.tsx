@@ -9,7 +9,7 @@ import OcrOnFirstFrame from './accordion_components/ocr_on_first_frame';
 import SpanishTextTranslation from './accordion_components/spanish_text_translation';
 
 
-interface VideoData {
+export interface VideoData {
   checkpoint_2: {
     duration: number | null;
     pixels_tall: number | null;
@@ -31,42 +31,39 @@ interface VideoData {
   };
 }
 
-
-
-const accordionData = [
-  {
-    title: 'Video duration and dimensions',
-    content: <DurationAndDimension />,
-  },
-  {
-    title: 'Audio Fragment',
-    content: <AudioFragment />,
-  },
-  {
-    title: 'Spanish Text Translation',
-    content: <SpanishTextTranslation />,
-  },
-  {
-    title: 'Hear Spanish Translation',
-    content: <HearSpanishTranslation />,
-  },
-  {
-    title: 'First Frame',
-    content: <FirstFrame />,
-  },
-  {
-    title: 'OCR on First Frame',
-    content: <OcrOnFirstFrame />,
-  }
-];
-
-
 function App() {
   const [textInput, setTextInput] = useState('');
   const [latestUploadedVideo, setLatestUploadedVideo] = useState('');
   const [submitCount, setSubmitCount] = useState(0);
   const [uploadedVideoId, setUploadedVideoId] = useState('');
   const [videoData, setVideoData] = useState<VideoData | null>(null);
+
+  const accordionData = [
+    {
+      title: 'Video duration and dimensions',
+      content: <DurationAndDimension videoData={videoData} />,
+    },
+    {
+      title: 'Audio Fragment',
+      content: <AudioFragment videoData={videoData} />,
+    },
+    {
+      title: 'Spanish Text Translation',
+      content: <SpanishTextTranslation />,
+    },
+    {
+      title: 'Hear Spanish Translation',
+      content: <HearSpanishTranslation />,
+    },
+    {
+      title: 'First Frame',
+      content: <FirstFrame />,
+    },
+    {
+      title: 'OCR on First Frame',
+      content: <OcrOnFirstFrame />,
+    }
+  ];
 
   useEffect(() => {
   const fetchLatestVideoUrl = async () => {
