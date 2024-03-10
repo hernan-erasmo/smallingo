@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from core.models import SmallingoVideo
 from core.serializers import SmallingoVideoSerializer, SmallingoVideoCreateSerializer
-
+from core.utils import format_video_info
 
 class SmallingoVideoListView(APIView):
     def get(self, request):
@@ -16,10 +16,10 @@ class SmallingoVideoDetailView(APIView):
     def get(self, request, pk):
         try:
             smallingo_video = SmallingoVideo.objects.get(pk=pk)
-            serializer = SmallingoVideoSerializer(smallingo_video, many=False)
+            data = format_video_info(smallingo_video)
+            return Response(data)
         except SmallingoVideo.DoesNotExist:
             return Response({'error': 'Object does not exist', 'id': -1}, status=status.HTTP_404_NOT_FOUND)
-        return Response(serializer.data)
 
 
 class SmallingoVideoCreateView(APIView):
