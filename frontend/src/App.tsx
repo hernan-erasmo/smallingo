@@ -1,6 +1,12 @@
 import React, { ChangeEvent, useState, useEffect } from 'react';
 import { Container, TextField, Button, Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import DurationAndDimension from './accordion_components/duration_and_dimensions';
+import HearSpanishTranslation from './accordion_components/hear_spanish_translation';
+import AudioFragment from './accordion_components/audio_fragment';
+import FirstFrame from './accordion_components/first_frame';
+import OcrOnFirstFrame from './accordion_components/ocr_on_first_frame';
+import SpanishTextTranslation from './accordion_components/spanish_text_translation';
 
 
 interface VideoData {
@@ -24,6 +30,35 @@ interface VideoData {
     video_ocr: string | null;
   };
 }
+
+
+
+const accordionData = [
+  {
+    title: 'Video duration and dimensions',
+    content: <DurationAndDimension />,
+  },
+  {
+    title: 'Audio Fragment',
+    content: <AudioFragment />,
+  },
+  {
+    title: 'Spanish Text Translation',
+    content: <SpanishTextTranslation />,
+  },
+  {
+    title: 'Hear Spanish Translation',
+    content: <HearSpanishTranslation />,
+  },
+  {
+    title: 'First Frame',
+    content: <FirstFrame />,
+  },
+  {
+    title: 'OCR on First Frame',
+    content: <OcrOnFirstFrame />,
+  }
+];
 
 
 function App() {
@@ -139,66 +174,16 @@ function App() {
             'No uploads yet, be the first!'
         }
       </Typography>
-      <Accordion style={{ marginTop: 20 }}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>Video duration and dimensions</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            This is the content for the Video duration and dimensions accordion.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion style={{ marginTop: 20 }}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>Audio Fragment</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            This is the content for the Audio Fragment accordion.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion style={{ marginTop: 20 }}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>Spanish Text Translation</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            This is the content for the Spanish Text Translation accordion.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion style={{ marginTop: 20 }}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>Hear Spanish Translation</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            This is the content for the Hear Spanish Translation accordion.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion style={{ marginTop: 20 }}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>First frame</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            This is the content for the First frame accordion.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion style={{ marginTop: 20 }}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>Words on First Frame</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            This is the content for the Words on First Frame accordion.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
+      {accordionData.map((item, index) => (
+        <Accordion key={index} style={{ marginTop: 20 }}>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography>{item.title}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            {item.content}
+          </AccordionDetails>
+        </Accordion>
+      ))}
     </Container>
   );
 }
