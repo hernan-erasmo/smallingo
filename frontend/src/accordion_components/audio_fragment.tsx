@@ -11,11 +11,13 @@ const AudioFragment = (props: DurationAndDimensionProps) => {
     const audioSrc = videoData?.checkpoint_3.audio_fragment;
     const downloadButtonLabel = audioSrc ? "Download audio fragment" : "Loading link, please wait";
     const isDisabled = audioSrc ? false : true;
+    const baseAddress = "http://localhost:8000"
+    const audioHref = baseAddress + audioSrc;
 
     return(
         <div style={ isDisabled ? {pointerEvents: 'none', opacity: 0.5} : {} }>
-            <AudioPlayer isDisabled={isDisabled} audioSrc={audioSrc ? audioSrc : ""}/>
-            <a href={audioSrc ? audioSrc : ""} download>{downloadButtonLabel}</a>
+            <AudioPlayer isDisabled={isDisabled} audioSrc={audioSrc ? audioHref : ""}/>
+            <a href={audioSrc ? audioHref : ""} download>{downloadButtonLabel}</a>
         </div>
     )
 }
