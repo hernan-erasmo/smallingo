@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from core.models import SmallingoVideo
 from core.serializers import SmallingoVideoSerializer, SmallingoVideoCreateSerializer
 from core.utils import format_video_info
+from core.tasks import download_original_video
 
 class SmallingoVideoListView(APIView):
     def get(self, request):
@@ -27,5 +28,6 @@ class SmallingoVideoCreateView(APIView):
         serializer = SmallingoVideoCreateSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            download_original_video.apply_async(args=[serializer.instance.id])
             return Response({'id': serializer.instance.id}, status=status.HTTP_201_CREATED)
         return Response({'error': 'Invalid data provided', 'id': -1}, status=status.HTTP_400_BAD_REQUEST)
