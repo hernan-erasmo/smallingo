@@ -57,7 +57,7 @@ function App() {
     },
     {
       title: 'First Frame',
-      content: <FirstFrame />,
+      content: <FirstFrame videoData={videoData}/>,
     },
     {
       title: 'OCR on First Frame',
@@ -112,7 +112,7 @@ function App() {
       };
 
       const fetchPeriodically = async () => {
-        const endTime = Date.now() + 60 * 1000; // 60 seconds from now
+        const endTime = Date.now() + 120 * 1000; // 120 seconds from now
         while (Date.now() < endTime) {
           await fetchData();
           await new Promise(resolve => setTimeout(resolve, 3000)); // Wait for 3 seconds
@@ -138,7 +138,8 @@ function App() {
         body: JSON.stringify({ url: textInput }),
       });
       if (!response.ok) {
-        throw new Error('Failed to create new video');
+        console.log("error creating new video: ", response);
+        throw new Error('Failed to create new video: ');
       }
       const data = await response.json();
       setUploadedVideoId(data.id); // Store the uploaded video ID
