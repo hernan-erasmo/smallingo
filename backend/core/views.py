@@ -14,10 +14,14 @@ class SmallingoVideoListView(APIView):
 
 
 class SmallingoVideoDetailView(APIView):
-    def get(self, request, pk):
+    def get(self, request, pk=None):
         try:
-            smallingo_video = SmallingoVideo.objects.get(pk=pk)
-            data = format_video_info(smallingo_video)
+            if not pk:
+                smallingo_video = SmallingoVideo.objects.latest('created_at')
+                data = {"url": smallingo_video.url}
+            else:
+                smallingo_video = SmallingoVideo.objects.get(pk=pk)
+                data = format_video_info(smallingo_video)
             return Response(data)
         except SmallingoVideo.DoesNotExist:
             return Response({'error': 'Object does not exist', 'id': -1}, status=status.HTTP_404_NOT_FOUND)
