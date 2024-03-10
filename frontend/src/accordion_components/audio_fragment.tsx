@@ -1,8 +1,9 @@
 import React from 'react';
+import AudioPlayer from '../components/audio_player';
 
 const AudioFragment = () => {
     return(
-        <p>This is the content of AudioFragment</p>
+        <AudioPlayer audioSrc='/home/hernan' />
     )
 }
 
