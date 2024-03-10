@@ -1,8 +1,25 @@
 import React from 'react';
+import { VideoData } from '../App';
 
-const DurationAndDimension = () => {
+interface DurationAndDimensionProps {
+    videoData: VideoData | null
+}
+
+const DurationAndDimension = (props: DurationAndDimensionProps) => {
+    const { videoData } = props;
     return(
-        <p>This is the content of DurationAndDimension</p>
+        <ul>
+            <li>Video duration (seconds): {
+                videoData?.checkpoint_2.duration ?
+                videoData?.checkpoint_2.duration :
+                "Loading..."
+            }</li>
+            <li>Video height (px): {
+                videoData?.checkpoint_2.pixels_tall ?
+                videoData?.checkpoint_2.pixels_tall :
+                "Loading..."
+            }</li>
+        </ul>
     )
 }
 

@@ -5,27 +5,28 @@ import PauseIcon from '@mui/icons-material/Pause';
 
 interface AudioPlayerProps {
     audioSrc: string
+    isDisabled: boolean
 }
 
 const AudioPlayer = (props: AudioPlayerProps) => {
-  const { audioSrc } = props;
+  const { audioSrc, isDisabled } = props;
   const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const togglePlay = () => {
     const audio = audioRef.current;
     if (audio) {
-        if (isPlaying) {
-            audio.pause();
-            } else {
-            audio.play();
-            }
-            setIsPlaying(!isPlaying);
+      if (isPlaying) {
+        audio.pause();
+      } else {
+        audio.play();
+      }
+      setIsPlaying(!isPlaying);
     }
   }
 
   return (
-    <div>
+    <div style={ isDisabled ? {pointerEvents: 'none', opacity: 0.5} : {} }>
       <audio ref={audioRef} src={audioSrc}></audio>
       <IconButton onClick={togglePlay}>
         {isPlaying ? <PauseIcon /> : <PlayArrow />}
