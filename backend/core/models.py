@@ -8,6 +8,7 @@ class SmallingoVideo(models.Model):
     
     # required for extracting info
     uploaded_file = models.FileField(blank=True, null=True, upload_to=settings.VIDEO_DIR)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     # checkpoint 2
     duration = models.DurationField(blank=True, null=True)

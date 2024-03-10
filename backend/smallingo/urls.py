@@ -23,6 +23,7 @@ from core.views import SmallingoVideoListView, SmallingoVideoCreateView, Smallin
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('videos/', SmallingoVideoListView.as_view(), name='video-list'),
+    path('videos/latest/', SmallingoVideoDetailView.as_view(), name='video-list'),
     path('videos/<int:pk>/', SmallingoVideoDetailView.as_view(), name='video-list'),
     path('videos/create/', SmallingoVideoCreateView.as_view(), name='create-video'),
 ]
