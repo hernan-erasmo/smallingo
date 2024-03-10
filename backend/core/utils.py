@@ -29,16 +29,16 @@ def format_video_info(sv: SmallingoVideo) -> Dict:
             "pixels_tall": sv.pixels_tall
         },
         "checkpoint_3": {
-            "audio_fragment": sv.audio_fragment.path if sv.audio_fragment else None
+            "audio_fragment": sv.audio_fragment.url if sv.audio_fragment else None
         },
         "checkpoint_4": {
             "audio_fragment_text": sv.audio_fragment_text
         },
         "checkpoint_5": {
-            "audio_fragment_speech": sv.audio_fragment_speech.path if sv.audio_fragment_speech else None
+            "audio_fragment_speech": sv.audio_fragment_speech.url if sv.audio_fragment_speech else None
         },
         "checkpoint_6": {
-            "video_thumbnail": sv.video_thumbnail.path if sv.video_thumbnail else None
+            "video_thumbnail": sv.video_thumbnail.url if sv.video_thumbnail else None
         },
         "checkpoint_7": {
             "video_ocr": sv.video_ocr
